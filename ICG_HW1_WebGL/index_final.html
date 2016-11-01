@@ -143,6 +143,8 @@
     varying vec3 vertPos;
     uniform sampler2D uSampler;
     varying vec2 TextureCoord;
+	varying vec4 vFragcolor;
+
 
     uniform float uMaterialShininess;
     uniform vec3 uAmbientColor;
@@ -179,8 +181,7 @@ vec3 lightDirection = normalize(uPointLightingLocation - vertPos);
         //gl_FragColor = vec4(vec3(1.0,1.0,1.0) * light, 1.0); 
 
         vec4 fragmentColor;
-        fragmentColor = texture2D(uSampler, vec2(TextureCoord.s, TextureCoord.t));
-        gl_FragColor = vec4(fragmentColor.rgb * lightWeighting, fragmentColor.a);
+        gl_FragColor = vec4(vFragcolor.rgb * lightWeighting, vFragcolor.a);
 
     }
     </script>
@@ -196,13 +197,13 @@ vec3 lightDirection = normalize(uPointLightingLocation - vertPos);
     uniform mat4 uPMatrix;
 
 
-
+	varying vec4 vFragcolor;
     varying vec3 vertPos;
     varying vec3 normalInterp;
     varying vec2 TextureCoord;
 
 
-//uniform sampler2D uSampler;
+uniform sampler2D uSampler;
 
 void main(void) {
     gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
@@ -210,6 +211,7 @@ void main(void) {
 
     normalInterp = uNMatrix * aVertexNormal;
     TextureCoord=aTextureCoord;
+    vFragcolor = texture2D(uSampler, vec2(TextureCoord.s, TextureCoord.t));
 }
 </script>
 
